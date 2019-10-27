@@ -1,1 +1,0 @@
-"./freeRTOS_kernel/scr/heap_2.obj" "./freeRTOS_kernel/scr/list.obj" "./freeRTOS_kernel/scr/port.obj" "./freeRTOS_kernel/scr/portasm.obj" "./freeRTOS_kernel/scr/queue.obj" "./freeRTOS_kernel/scr/tasks.obj" "./src/main.obj" "./src/startup_ccs.obj" "../freeRTOS.cmd" -llibc.a -l"/home/gonza/ti/TivaWare/driverlib/ccs/Debug/driverlib.lib" 

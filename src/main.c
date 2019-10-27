@@ -35,6 +35,12 @@
 #include "queue.h"
 #include "semphr.h"
 
+//*************************** DEFINES ***************************************
+
+#define LED_ROJO    GPIO_PIN_1
+#define LED_AZUL    GPIO_PIN_2
+#define LED_VERDE   GPIO_PIN_3
+
 /*****************************************************************************
  *                      DEFINICION DE TAREAS
  ****************************************************************************/
@@ -46,24 +52,35 @@
 //
 //*****************************************************************************
 static void Tarea_1(void *pvParameters)  {
+    uint8_t ui8PinData=2;
 
 
-    //
-    // Aqui se escribe el codigo de inicializacion de la tarea
-    //
-
-    /*
-     * *********** CODIGO AQUI ************
-     */
 
     //
     // Loop forever.
     //
     while(1)  {
+
         /*
-         * Aqui se escribe el codigo de nuestra tarea
+         * Se enciende el led correspondiente al indice
          */
-        SysCtlDelay(200);
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, ui8PinData);
+        SysCtlDelay(2000000);
+
+        /*
+         * Se apagan todos los leds
+         */
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, 0x00);
+        SysCtlDelay(2000000);
+
+        /*
+         * Incremento del indice en potencias de 2
+         */
+
+        if(ui8PinData == 8)
+            ui8PinData = 2;
+        else
+            ui8PinData = ui8PinData * 2;
     }
 }
 
@@ -117,6 +134,12 @@ int main(void)  {
     SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ |
                        SYSCTL_OSC_MAIN);
 
+    /*
+     * Configuramos el puerto F correspondientes a los leds
+     */
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+    GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL | LED_VERDE);
 
 
     //
