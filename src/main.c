@@ -29,6 +29,8 @@
 #include "driverlib/gpio.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
+#include "driverlib/uart.h"
+#include "utils/uartstdio.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -90,7 +92,6 @@ static void Tarea_1(void *pvParameters)  {
 
 
 
-
 //*****************************************************************************
 //
 // The error routine that is called if the driver library encounters an error.
@@ -123,6 +124,53 @@ vApplicationStackOverflowHook(xTaskHandle *pxTask, char *pcTaskName)
 }
 
 //*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+//*****************************************************************************
+
+
+
+//*****************************************************************************
+//
+// Configure the UART and its pins.  This must be called before UARTprintf().
+//
+//*****************************************************************************
+void ConfigureUART(void)  {
+    //
+    // Enable the GPIO Peripheral used by the UART.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+
+    //
+    // Enable UART0
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+
+    //
+    // Configure GPIO Pins for UART mode.
+    //
+    GPIOPinConfigure(GPIO_PA0_U0RX);
+    GPIOPinConfigure(GPIO_PA1_U0TX);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+    //
+    // Use the internal 16MHz oscillator as the UART clock source.
+    //
+    UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
+
+    //
+    // Initialize the UART for console I/O.
+    //
+    UARTStdioConfig(0, 115200, 16000000);
+}
+
+
+
+
+
+
+
+//*****************************************************************************
 //
 // Initialize FreeRTOS and start the initial set of tasks.
 //
@@ -143,12 +191,24 @@ int main(void)  {
 
 
     //
+    // Initialize the UART and configure it for 115,200, 8-N-1 operation.
+    //
+    ConfigureUART();
+
+
+    //
     // Crear la primer tarea.
     //
 
     xTaskCreate(Tarea_1, (signed portCHAR *)"Tarea_1", configMINIMAL_STACK_SIZE, NULL,
                        tskIDLE_PRIORITY + 1, NULL);
 
+
+
+    //
+    // Hacemos un print informando que el scheduler esta por comenzar
+    //
+    UARTprintf("\nBienvenido a intro RTOS!\nIniciando scheduler...\n");
 
 
     //
