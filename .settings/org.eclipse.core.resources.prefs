@@ -1,6 +1,4 @@
 eclipse.preferences.version=1
-encoding//Debug/drivers/subdir_rules.mk=UTF-8
-encoding//Debug/drivers/subdir_vars.mk=UTF-8
 encoding//Debug/freeRTOS_kernel/scr/subdir_rules.mk=UTF-8
 encoding//Debug/freeRTOS_kernel/scr/subdir_vars.mk=UTF-8
 encoding//Debug/makefile=UTF-8
@@ -10,5 +8,3 @@ encoding//Debug/src/subdir_rules.mk=UTF-8
 encoding//Debug/src/subdir_vars.mk=UTF-8
 encoding//Debug/subdir_rules.mk=UTF-8
 encoding//Debug/subdir_vars.mk=UTF-8
-encoding//Debug/utils/subdir_rules.mk=UTF-8
-encoding//Debug/utils/subdir_vars.mk=UTF-8

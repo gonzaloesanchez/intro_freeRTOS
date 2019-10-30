@@ -65,13 +65,13 @@ static void Tarea_1(void *pvParameters)  {
          * Se enciende el led correspondiente al indice
          */
         GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, ui8PinData);
-        SysCtlDelay(2000000);
+        vTaskDelay( 1000 / portTICK_RATE_MS);   //un segundo
 
         /*
          * Se apagan todos los leds
          */
         GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, 0x00);
-        SysCtlDelay(2000000);
+        vTaskDelay(1000 / portTICK_RATE_MS);   //un segundo
 
         /*
          * Incremento del indice en potencias de 2
@@ -89,8 +89,6 @@ static void Tarea_1(void *pvParameters)  {
 
 
 
-
-
 //*****************************************************************************
 //
 // The error routine that is called if the driver library encounters an error.
@@ -104,23 +102,7 @@ __error__(char *pcFilename, uint32_t ui32Line)
 
 #endif
 
-//*****************************************************************************
-//
-// This hook is called by FreeRTOS when an stack overflow error is detected.
-//
-//*****************************************************************************
-void
-vApplicationStackOverflowHook(xTaskHandle *pxTask, char *pcTaskName)
-{
-    //
-    // This function can not return, so loop forever.  Interrupts are disabled
-    // on entry to this function, so no processor interrupts will interrupt
-    // this loop.
-    //
-    while(1)
-    {
-    }
-}
+
 
 //*****************************************************************************
 //
