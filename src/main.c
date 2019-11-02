@@ -41,6 +41,11 @@
 #define LED_AZUL    GPIO_PIN_2
 #define LED_VERDE   GPIO_PIN_3
 
+
+#define PERIODO_ROJO    1000
+#define PERIODO_AZUL    500
+#define PERIODO_VERDE   250
+
 /*****************************************************************************
  *                      DEFINICION DE TAREAS
  ****************************************************************************/
@@ -62,30 +67,83 @@ static void Tarea_1(void *pvParameters)  {
     while(1)  {
 
         /*
-         * Se enciende el led correspondiente al indice
+         * Se enciende el led rojo
          */
-        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, ui8PinData);
-        vTaskDelay( 1000 / portTICK_RATE_MS);   //un segundo
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_VERDE, LED_VERDE);
+        vTaskDelay( PERIODO_VERDE / portTICK_RATE_MS);   //medio segundo
 
         /*
          * Se apagan todos los leds
          */
-        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO | LED_AZUL| LED_VERDE, 0x00);
-        vTaskDelay(1000 / portTICK_RATE_MS);   //un segundo
-
-        /*
-         * Incremento del indice en potencias de 2
-         */
-
-        if(ui8PinData == 8)
-            ui8PinData = 2;
-        else
-            ui8PinData = ui8PinData * 2;
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO, 0x00);
+        vTaskDelay(PERIODO_VERDE / portTICK_RATE_MS);   //medio segundo
     }
 }
 
 
 //=============================================================================
+
+
+//*****************************************************************************
+//
+// Tarea a poblar con codigo
+//
+//*****************************************************************************
+static void Tarea_2(void *pvParameters)  {
+
+    //
+    // Loop forever.
+    //
+    while(1)  {
+
+        /*
+         * Se enciende el led rojo
+         */
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO, LED_ROJO);
+        vTaskDelay( PERIODO_ROJO / portTICK_RATE_MS);   //un segundo
+
+        /*
+         * Se apagan todos los leds
+         */
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_ROJO, 0x00);
+        vTaskDelay(PERIODO_ROJO / portTICK_RATE_MS);   //un segundo
+
+
+    }
+}
+//=============================================================================
+
+
+
+//*****************************************************************************
+//
+// Tarea a poblar con codigo
+//
+//*****************************************************************************
+static void Tarea_3(void *pvParameters)  {
+
+    //
+    // Loop forever.
+    //
+    while(1)  {
+
+        /*
+         * Se enciende el led rojo
+         */
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_AZUL, LED_AZUL);
+        vTaskDelay( PERIODO_VERDE / portTICK_RATE_MS);   //un segundo
+
+        /*
+         * Se apagan todos los leds
+         */
+        GPIOPinWrite(GPIO_PORTF_BASE, LED_AZUL, 0x00);
+        vTaskDelay(PERIODO_VERDE / portTICK_RATE_MS);   //un segundo
+
+
+    }
+}
+//=============================================================================
+
 
 
 
@@ -130,6 +188,12 @@ int main(void)  {
 
     xTaskCreate(Tarea_1, (signed portCHAR *)"Tarea_1", configMINIMAL_STACK_SIZE, NULL,
                        tskIDLE_PRIORITY + 1, NULL);
+
+    xTaskCreate(Tarea_2, (signed portCHAR *)"Tarea_2", configMINIMAL_STACK_SIZE, NULL,
+                           tskIDLE_PRIORITY + 1, NULL);
+
+    xTaskCreate(Tarea_3, (signed portCHAR *)"Tarea_3", configMINIMAL_STACK_SIZE, NULL,
+                           tskIDLE_PRIORITY + 1, NULL);
 
 
 
